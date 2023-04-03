@@ -6,6 +6,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import TableComponent from "../../components/table/Table";
 import "../../App.scss";
 import { useNavigate } from "react-router-dom";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -15,6 +17,7 @@ const Home = () => {
   const [filterUserName, setFilterUserName] = useState(false);
   const [filterUserPosition, setFilterUserPosition] = useState(false);
   const [filterUserOffice, setFilterUserOffice] = useState(false);
+  const [openFilterDropdown, setOpenFilterDropdown] = useState(false);
   const navigate = useNavigate();
 
   const handleFilterUserName = (e) => {
@@ -95,6 +98,11 @@ const Home = () => {
     navigate(`/${page}`);
   };
 
+  const handleFilterDropdown = () => {
+    setOpenFilterDropdown(!openFilterDropdown);
+  };
+  console.log(openFilterDropdown);
+
   useEffect(() => {
     setFilterData(userData);
   }, [userData]);
@@ -116,31 +124,44 @@ const Home = () => {
           <SearchIcon />
         </div>
         <div className="filter-wrapper">
-          <h3 className="filter-heading">Filter</h3>
-          <div>
-            <input
-              type="checkbox"
-              name="name"
-              onChange={handleFilterUserName}
-            />
-            <span>Name</span>
+          <div
+            onClick={handleFilterDropdown}
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <h3 className="filter-heading">Filter</h3>
+            {openFilterDropdown ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </div>
-          <div>
-            <input
-              type="checkbox"
-              name="position"
-              onChange={handleFilterUserPosition}
-            />
-            <span>Position</span>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              name="office"
-              onChange={handleFilterUserOffice}
-            />
-            <span>Office</span>
-          </div>
+          {openFilterDropdown && (
+            <div>
+              <div>
+                <input
+                  type="checkbox"
+                  name="name"
+                  onChange={handleFilterUserName}
+                />
+                <span>Name</span>
+              </div>
+              <div>
+                <input
+                  type="checkbox"
+                  name="position"
+                  onChange={handleFilterUserPosition}
+                />
+                <span>Position</span>
+              </div>
+              <div>
+                <input
+                  type="checkbox"
+                  name="office"
+                  onChange={handleFilterUserOffice}
+                />
+                <span>Office</span>
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <div className="table-wrapper">
